@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام محاسبة الشركات الناشئة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .form-group label {
+            float: right;
+        }
+        .stat-card, .transaction-table, .employee-table {
+            text-align: right;
+        }
+        th {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> نظام محاسبة الشركات الناشئة</h1>
+            <div class="balance-display">
+                <h2>الرصيد الحالي</h2>
+                <div class="balance-amount" id="currentBalance">٠٫٠٠ $</div>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="dashboard"><i class="fas fa-home"></i> لوحة التحكم</button>
+            <button class="tab-btn" data-tab="transactions"><i class="fas fa-exchange-alt"></i> المعاملات</button>
+            <button class="tab-btn" data-tab="projects"><i class="fas fa-project-diagram"></i> المشاريع</button>
+            <button class="tab-btn" data-tab="employees"><i class="fas fa-users"></i> الموظفين</button>
+            <button class="tab-btn" data-tab="reports"><i class="fas fa-chart-bar"></i> التقارير</button>
+        </nav>
+
+        <main>
+            <!-- لوحة التحكم -->
+            <div class="tab-content active" id="dashboard">
+                <div class="quick-actions">
+                    <button class="action-btn" id="addIncomeBtn"><i class="fas fa-plus-circle"></i> إضافة دخل</button>
+                    <button class="action-btn" id="addExpenseBtn"><i class="fas fa-minus-circle"></i> إضافة مصروف</button>
+                    <button class="action-btn" id="addProjectBtn"><i class="fas fa-project-diagram"></i> إضافة مشروع</button>
+                    <button class="action-btn" id="addEmployeeBtn"><i class="fas fa-user-plus"></i> إضافة موظف</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>إيرادات هذا الشهر</h3>
+                        <div class="stat-value" id="monthIncome">٠٫٠٠ $</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>مصروفات هذا الشهر</h3>
+                        <div class="stat-value" id="monthExpenses">٠٫٠٠ $</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>المشاريع النشطة</h3>
+                        <div class="stat-value" id="activeProjects">٠</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>الموظفين</h3>
+                        <div class="stat-value" id="totalEmployees">٠</div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>آخر المعاملات</h3>
+                    <div class="activity-list" id="recentTransactions">
+                        <!-- سيتم تعبئتها بواسطة الجافاسكريبت -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب المعاملات -->
+            <div class="tab-content" id="transactions">
+                <div class="transaction-filters">
+                    <select id="transactionTypeFilter">
+                        <option value="all">كل المعاملات</option>
+                        <option value="income">إيرادات</option>
+                        <option value="expense">مصروفات</option>
+                    </select>
+                    <input type="date" id="transactionDateFilter">
+                    <button id="applyFiltersBtn">تطبيق الفلتر</button>
+                    <button id="resetFiltersBtn">إعادة تعيين</button>
+                </div>
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الوصف</th>
+                            <th>الفئة</th>
+                            <th>المبلغ</th>
+                            <th>النوع</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsList">
+                        <!-- سيتم تعبئتها بواسطة الجافاسكريبت -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- تبويب المشاريع -->
+            <div class="tab-content" id="projects">
+                <div class="project-actions">
+                    <button class="action-btn" id="newProjectBtn"><i class="fas fa-plus"></i> مشروع جديد</button>
+                </div>
+                <div class="project-list" id="projectList">
+                    <!-- سيتم تعبئتها بواسطة الجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- تبويب الموظفين -->
+            <div class="tab-content" id="employees">
+                <div class="employee-actions">
+                    <button class="action-btn" id="newEmployeeBtn"><i class="fas fa-plus"></i> موظف جديد</button>
+                </div>
+                <table class="employee-table">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>الوظيفة</th>
+                            <th>الراتب</th>
+                            <th>آخر دفعة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeList">
+                        <!-- سيتم تعبئتها بواسطة الجافاسكريبت -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- تبويب التقارير -->
+            <div class="tab-content" id="reports">
+                <div class="report-options">
+                    <select id="reportType">
+                        <option value="monthly">ملخص شهري</option>
+                        <option value="project">ملخص المشاريع</option>
+                        <option value="employee">تكاليف الموظفين</option>
+                        <option value="category">فئات المصروفات</option>
+                    </select>
+                    <input type="month" id="reportMonth">
+                    <button id="generateReportBtn">إنشاء تقرير</button>
+                </div>
+                <div class="report-results" id="reportResults">
+                    <p>اختر خيارات التقرير ثم اضغط "إنشاء تقرير"</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="reportChart"></canvas>
+                </div>
+            </div>
+        </main>
+
+        <!-- النوافذ المنبثقة -->
+        <div class="modal" id="incomeModal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>إضافة دخل</h2>
+                <form id="incomeForm">
+                    <div class="form-group">
+                        <label for="incomeAmount">المبلغ</label>
+                        <input type="number" step="0.01" id="incomeAmount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="incomeSource">المصدر</label>
+                        <input type="text" id="incomeSource" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="incomeProject">المشروع (اختياري)</label>
+                        <select id="incomeProject">
+                            <option value="">لا يوجد</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="incomeDate">التاريخ</label>
+                        <input type="date" id="incomeDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="incomeNotes">ملاحظات</label>
+                        <textarea id="incomeNotes"></textarea>
+                    </div>
+                    <button type="submit">إضافة دخل</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="expenseModal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>إضافة مصروف</h2>
+                <form id="expenseForm">
+                    <div class="form-group">
+                        <label for="expenseAmount">المبلغ</label>
+                        <input type="number" step="0.01" id="expenseAmount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseCategory">الفئة</label>
+                        <select id="expenseCategory" required>
+                            <option value="salary">رواتب</option>
+                            <option value="office">لوازم مكتبية</option>
+                            <option value="rent">إيجار</option>
+                            <option value="utilities">مرافق</option>
+                            <option value="marketing">تسويق</option>
+                            <option value="travel">سفر</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDescription">الوصف</label>
+                        <input type="text" id="expenseDescription" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseProject">المشروع (اختياري)</label>
+                        <select id="expenseProject">
+                            <option value="">لا يوجد</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseDate">التاريخ</label>
+                        <input type="date" id="expenseDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenseEmployee">الموظف (إذا كان راتب)</label>
+                        <select id="expenseEmployee">
+                            <option value="">لا يوجد</option>
+                        </select>
+                    </div>
+                    <button type="submit">إضافة مصروف</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="projectModal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="projectModalTitle">إضافة مشروع جديد</h2>
+                <form id="projectForm">
+                    <input type="hidden" id="projectId">
+                    <div class="form-group">
+                        <label for="projectName">اسم المشروع</label>
+                        <input type="text" id="projectName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectClient">العميل</label>
+                        <input type="text" id="projectClient">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectBudget">الميزانية ($)</label>
+                        <input type="number" step="0.01" id="projectBudget">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectStartDate">تاريخ البدء</label>
+                        <input type="date" id="projectStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectEndDate">تاريخ الانتهاء</label>
+                        <input type="date" id="projectEndDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="projectStatus">الحالة</label>
+                        <select id="projectStatus">
+                            <option value="active">نشط</option>
+                            <option value="completed">مكتمل</option>
+                            <option value="on-hold">معلق</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectNotes">ملاحظات</label>
+                        <textarea id="projectNotes"></textarea>
+                    </div>
+                    <button type="submit" id="projectSubmitBtn">حفظ المشروع</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="employeeModal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="employeeModalTitle">إضافة موظف جديد</h2>
+                <form id="employeeForm">
+                    <input type="hidden" id="employeeId">
+                    <div class="form-group">
+                        <label for="employeeName">الاسم الكامل</label>
+                        <input type="text" id="employeeName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeePosition">الوظيفة</label>
+                        <input type="text" id="employeePosition" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeSalary">الراتب الشهري ($)</label>
+                        <input type="number" step="0.01" id="employeeSalary" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeEmail">البريد الإلكتروني</label>
+                        <input type="email" id="employeeEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="employeePhone">الهاتف</label>
+                        <input type="tel" id="employeePhone">
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeHireDate">تاريخ التعيين</label>
+                        <input type="date" id="employeeHireDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeType">نوع الموظف</label>
+                        <select id="employeeType">
+                            <option value="permanent">دائم</option>
+                            <option value="temporary">مؤقت</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="employeeSubmitBtn">حفظ الموظف</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- نافذة إدارة المهام -->
+        <div class="modal" id="taskModal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="taskModalTitle">تعيين مهمة جديدة</h2>
+                <form id="taskForm">
+                    <input type="hidden" id="taskId">
+                    <div class="form-group">
+                        <label for="taskEmployee">الموظف</label>
+                        <select id="taskEmployee" required>
+                            <option value="">اختر الموظف</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskProject">المشروع (اختياري)</label>
+                        <select id="taskProject">
+                            <option value="">لا يوجد</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDescription">وصف المهمة</label>
+                        <textarea id="taskDescription" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskAmount">المبلغ المستحق ($)</label>
+                        <input type="number" step="0.01" id="taskAmount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDueDate">تاريخ الاستحقاق</label>
+                        <input type="date" id="taskDueDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="taskStatus">حالة المهمة</label>
+                        <select id="taskStatus">
+                            <option value="pending">قيد الانتظار</option>
+                            <option value="in-progress">قيد التنفيذ</option>
+                            <option value="completed">مكتملة</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="taskSubmitBtn">حفظ المهمة</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
